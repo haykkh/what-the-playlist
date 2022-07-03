@@ -32,6 +32,7 @@
   "dependencies": {
     "@pinia/nuxt": "^0.1.9",
     "daisyui": "^2.18.0",
-    "pinia": "^2.0.14"
+    "pinia": "^2.0.14",
+    "pinia-plugin-persistedstate": "^1.6.1"
   }
 }
