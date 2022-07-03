@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div data-theme="cyberpunk">
     <NuxtLayout>
-      <NuxtPage/>
+      <NuxtPage />
     </NuxtLayout>
   </div>
 </template>
