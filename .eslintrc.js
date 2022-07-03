@@ -21,7 +21,7 @@ module.exports = {
   ],
   rules: {
     quotes: ["error", "double"],
-    semi: ["error", "always"],
+    semi: ["error", "never"],
     indent: ["error", 2],
     "no-multi-spaces": ["error"],
     "no-unused-vars": [
@@ -29,4 +29,4 @@ module.exports = {
       { vars: "all", args: "after-used", ignoreRestSiblings: false }
     ]
   }
-};
+}
