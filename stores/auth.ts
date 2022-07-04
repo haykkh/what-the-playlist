@@ -42,5 +42,16 @@ export const useAuthStore = defineStore({
     }
   },
 
+  actions: {
+    async fetchAccessToken (code: string): Promise<void> {
+      const { data } = await useFetch(`/api/auth/${code}`)
+
+      // need to create a shallow copy of data.value
+      // otherwise pinia-plugin-persistedstate
+      // doesn't persist data from useFetch/$fetch etc
+      this.token = Object.assign({}, data.value)
+    }
+  },
+
   persist: true
 })
