@@ -24,7 +24,22 @@ export const useAuthStore = defineStore({
   }),
 
   getters: {
-    isLoggedIn: state => !!state.token.access_token
+    isLoggedIn: state => !!state.token.access_token,
+    getUserAuthorizationLink: (): string => {
+      // "Request User Authorization" from
+      // https://developer.spotify.com/documentation/general/guides/authorization/code-flow/
+
+      const { spotifyClientId, spotifyCallbackUrl } = useRuntimeConfig()
+
+      const params = new URLSearchParams({
+        client_id: spotifyClientId,
+        redirect_uri: spotifyCallbackUrl,
+        response_type: "code",
+        scope: "user-read-currently-playing,user-read-playback-state,user-read-recently-played"
+      })
+
+      return `https://accounts.spotify.com/authorize?${params.toString()}`
+    }
   },
 
   persist: true
