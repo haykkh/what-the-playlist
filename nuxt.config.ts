@@ -7,6 +7,16 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "@pinia/nuxt"
   ],
+
+  runtimeConfig: {
+    spotifyClientSecret: "",
+
+    public: {
+      spotifyClientId: "",
+      spotifyCallbackUrl: ""
+    }
+  },
+
   vite: {
     plugins: [
       eslintPlugin()
