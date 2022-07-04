@@ -24,7 +24,7 @@ export const useAuthStore = defineStore({
   }),
 
   getters: {
-    isLoggedIn: state => !!state.token.access_token,
+    isLoggedIn: (state): boolean => !!state.token.access_token,
     getUserAuthorizationLink: (): string => {
       // "Request User Authorization" from
       // https://developer.spotify.com/documentation/general/guides/authorization/code-flow/
