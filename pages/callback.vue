@@ -14,7 +14,11 @@ const route = useRoute()
 const authStore = useAuthStore()
 
 if (typeof route.query.code === "string") {
-  authStore.fetchAccessToken(route.query.code).then(() => { navigateTo("/") })
+  authStore.fetchAccessToken(route.query.code)
+
+  if (authStore.isLoggedIn) {
+    navigateTo("/")
+  }
 }
 </script>
 
