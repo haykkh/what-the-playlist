@@ -8,8 +8,24 @@ interface IToken {
     scope: string
 }
 
+interface IUser {
+  country: string,
+  display_name: string,
+  email: string,
+  explicit_content: {filter_enabled:boolean, filter_locked:boolean},
+  external_urls: {spotify:string},
+  followers: { href:string, total:number },
+  href: string,
+  id: string,
+  images: { url:string, height:number, width:number }[],
+  product: string,
+  type: string,
+  uri: string
+}
+
 interface AuthState {
   token: IToken
+  user: IUser
 }
 
 export const useAuthStore = defineStore({
@@ -22,7 +38,8 @@ export const useAuthStore = defineStore({
       expires_in: undefined,
       refresh_token: undefined,
       scope: undefined
-    }
+    },
+    user: undefined
   }),
 
   getters: {
@@ -56,6 +73,23 @@ export const useAuthStore = defineStore({
       })
 
       return this.token
+    },
+
+    async fetchUser (): Promise<IUser> {
+      this.user = await $fetch("https://api.spotify.com/v1/me", {
+        headers: {
+          Authorization: `Bearer ${this.token.access_token}`
+        }
+      })
+
+      return this.user
+    },
+
+    async login (code: string): Promise<IUser> {
+      if (!this.isLoggedIn) {
+        await this.fetchAccessToken(code)
+      }
+      return this.user
     }
   },
 
