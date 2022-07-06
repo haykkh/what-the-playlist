@@ -1,13 +1,15 @@
 import { defineStore } from "pinia"
 
-interface AuthState {
-  token: {
+interface IToken {
     access_token: string
     token_type: string
     expires_in: number
     refresh_token: string
     scope: string
-  };
+}
+
+interface AuthState {
+  token: IToken
 }
 
 export const useAuthStore = defineStore({
@@ -43,13 +45,17 @@ export const useAuthStore = defineStore({
   },
 
   actions: {
-    async fetchAccessToken (code: string): Promise<void> {
+    async fetchAccessToken (code: string): Promise<IToken> {
       const { data } = await useFetch(`/api/auth/${code}`)
 
       // need to create a shallow copy of data.value
       // otherwise pinia-plugin-persistedstate
       // doesn't persist data from useFetch/$fetch etc
-      this.token = Object.assign({}, data.value)
+      this.$patch({
+        token: Object.assign({}, data.value)
+      })
+
+      return this.token
     }
   },
 
