@@ -13,6 +13,10 @@
 import { useAuthStore } from "@/stores/auth"
 
 const authStore = useAuthStore()
+
+if (authStore.isLoggedIn && !authStore.user) {
+  await authStore.fetchUser()
+}
 </script>
 
 <style lang="scss">
