@@ -1,20 +1,43 @@
 <template>
-  <div class="user-card">
+  <div v-if="user" class="user-card">
+    <figure v-if="user.images.length > 0" class="user-card-figure">
+      <img :src="user.images[0].url" class="user-card-figure-img">
+    </figure>
+
     <div class="user-card-body">
-      This is a user card
+      <a class="user-card-body-title" :href="user.href">
+        {{ user.display_name }}
+      </a>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { storeToRefs } from "pinia"
+
+import { useAuthStore } from "@/stores/auth"
+
+const authStore = useAuthStore()
+
+const { user } = storeToRefs(authStore)
 </script>
 
 <style lang="scss">
 .user-card {
-  @apply card bg-primary shadow-xl w-96 h-96;
+  @apply card bg-primary shadow-xl w-96;
+
+  &-figure {
+    &-img {
+      @apply w-full;
+    }
+  }
 
   &-body {
     @apply card-body items-center text-center;
+
+    &-title {
+      @apply card-title;
+    }
   }
 }
 </style>
