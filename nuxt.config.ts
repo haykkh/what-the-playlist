@@ -13,7 +13,8 @@ export default defineNuxtConfig({
 
     public: {
       spotifyClientId: "",
-      spotifyCallbackUrl: ""
+      spotifyCallbackUrl: "",
+      spotifyApiUrl: ""
     }
   },
 

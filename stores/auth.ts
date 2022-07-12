@@ -77,11 +77,9 @@ export const useAuthStore = defineStore({
     },
 
     async fetchUser (): Promise<IUser> {
-      this.user = await $fetch("https://api.spotify.com/v1/me", {
-        headers: {
-          Authorization: `Bearer ${this.token.access_token}`
-        }
-      })
+      const { data: user } = await this.$nuxt.$spottyFetch("/me")
+
+      this.user = user.value
 
       return this.user
     },
