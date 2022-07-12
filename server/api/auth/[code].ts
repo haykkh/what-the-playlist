@@ -4,12 +4,17 @@ export default defineEventHandler(async (event) => {
 
   // we use a server route here to be able to access the secret env var, spotifyClientSecret
 
-  const { spotifyClientSecret, public: { spotifyClientId, spotifyCallbackUrl } } = useRuntimeConfig()
+  const {
+    spotifyClientSecret,
+    public: { spotifyClientId, spotifyCallbackUrl }
+  } = useRuntimeConfig()
 
   return await $fetch("https://accounts.spotify.com/api/token", {
     method: "POST",
     headers: {
-      Authorization: `Basic ${Buffer.from(`${spotifyClientId}:${spotifyClientSecret}`).toString("base64")}`,
+      Authorization: `Basic ${Buffer.from(
+        `${spotifyClientId}:${spotifyClientSecret}`
+      ).toString("base64")}`,
       "Content-Type": "application/x-www-form-urlencoded"
     },
     body: new URLSearchParams({
