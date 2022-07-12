@@ -9,17 +9,17 @@ interface IToken {
 }
 
 interface IUser {
-  country: string,
-  display_name: string,
-  email: string,
-  explicit_content: {filter_enabled:boolean, filter_locked:boolean},
-  external_urls: {spotify:string},
-  followers: { href:string, total:number },
-  href: string,
-  id: string,
-  images: { url:string, height:number, width:number }[],
-  product: string,
-  type: string,
+  country: string
+  display_name: string
+  email: string
+  explicit_content: {filter_enabled:boolean, filter_locked:boolean}
+  external_urls: {spotify:string}
+  followers: { href:string, total:number }
+  href: string
+  id: string
+  images: { url:string, height:number, width:number }[]
+  product: string
+  type: string
   uri: string
 }
 
@@ -54,7 +54,8 @@ export const useAuthStore = defineStore({
         client_id: spotifyClientId,
         redirect_uri: spotifyCallbackUrl,
         response_type: "code",
-        scope: "user-read-currently-playing,user-read-playback-state,user-read-recently-played"
+        scope:
+          "user-read-currently-playing,user-read-playback-state,user-read-recently-played"
       })
 
       return `https://accounts.spotify.com/authorize?${params.toString()}`
