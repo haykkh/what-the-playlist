@@ -1,8 +1,10 @@
 <template>
   <div v-if="user" class="user-card">
-    <figure v-if="user.images.length > 0" class="user-card-figure">
-      <img :src="user.images[0].url" class="user-card-figure-img">
-    </figure>
+    <template v-if="user.images">
+      <figure v-if="user.images.length > 0" class="user-card-figure">
+        <img :src="user.images[0].url" class="user-card-figure-img">
+      </figure>
+    </template>
 
     <div class="user-card-body">
       <a class="user-card-body-title" :href="user.href">
