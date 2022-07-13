@@ -63,6 +63,17 @@ export const useMusicStore = defineStore({
       this.playlists = await this.$nuxt.$spottyPagedFetch("/me/playlists")
 
       return this.playlists
+    },
+
+    async fetchOnePlaylist (id: string): Promise<IPlaylist> {
+      const playlist = await this.$nuxt.$spottyFetch(`/playlists${id}`)
+      if (playlist) {
+        this.$patch((state) => {
+          state.playlists.push(playlist)
+        })
+      }
+
+      return playlist
     }
   },
 
