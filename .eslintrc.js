@@ -24,6 +24,7 @@ module.exports = {
     semi: ["error", "never"],
     indent: ["error", 2],
     "no-multi-spaces": ["error"],
+    "vue/multi-word-component-names": 0,
     "no-unused-vars": [
       "error",
       { vars: "all", args: "after-used", ignoreRestSiblings: false }
