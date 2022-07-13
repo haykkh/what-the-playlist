@@ -1,6 +1,6 @@
 import { defineStore } from "pinia"
 
-interface IPlaylist {
+export interface IPlaylist {
   collaborative: boolean
   description: string | null
   external_urls: {
@@ -66,7 +66,7 @@ export const useMusicStore = defineStore({
     },
 
     async fetchOnePlaylist (id: string): Promise<IPlaylist> {
-      const playlist = await this.$nuxt.$spottyFetch(`/playlists${id}`)
+      const playlist = await this.$nuxt.$spottyFetch(`/playlists/${id}`)
       if (playlist) {
         this.$patch((state) => {
           state.playlists.push(playlist)
