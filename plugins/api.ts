@@ -1,13 +1,13 @@
 import { useAuthStore } from "@/stores"
 
 interface ISpotifyPagesResponse {
-  href: string;
-  items: object[];
-  limit: number;
-  next: string | null;
-  offset: number;
-  previous: string | null;
-  total: number;
+  href: string
+  items: object[]
+  limit: number
+  next: string | null
+  offset: number
+  previous: string | null
+  total: number
 }
 
 export default defineNuxtPlugin(() => {
@@ -32,14 +32,18 @@ export default defineNuxtPlugin(() => {
    *  until spotify no longer returns data.value.next
    *
    */
-  const spottyPagedFetch = async (uri: string) => {
+  const spottyPagedFetch = async <returnDataType extends object>(uri: string): Promise<returnDataType[]> => {
     try {
-      const { data } = await spottyFetch<ISpotifyPagesResponse>(uri)
+      interface ISpotifyPagesResponseWithReturn extends ISpotifyPagesResponse {
+        items: returnDataType[]
+      }
+
+      const { data } = await spottyFetch<ISpotifyPagesResponseWithReturn>(uri)
 
       const allData = data.value.items
 
       while (data.value.next) {
-        const { data: newData } = await useFetch<ISpotifyPagesResponse>(
+        const { data: newData } = await useFetch<ISpotifyPagesResponseWithReturn>(
           data.value.next,
           {
             headers: {
