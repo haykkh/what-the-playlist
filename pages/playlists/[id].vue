@@ -11,6 +11,10 @@
 <script setup lang="ts">
 import { useMusicStore } from "@/stores"
 
+definePageMeta({
+  middleware: "auth"
+})
+
 const route = useRoute()
 
 const musicStore = useMusicStore()
