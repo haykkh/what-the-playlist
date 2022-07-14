@@ -1,5 +1,6 @@
 <template>
   <div>
+    <LoadingBar v-if="musicStore.playlists.length < 1" />
     <div class="overflow-x-auto w-full">
       <table class="table w-full">
         <!-- head -->
