@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { useAuthStore } from "@/stores/auth"
+import { useAuthStore } from "@/stores"
 
 const authStore = useAuthStore()
 
@@ -21,7 +21,7 @@ if (authStore.isLoggedIn && !authStore.user) {
 
 <style lang="scss">
 .index {
-  @apply hero min-h-screen;
+  @apply min-h-screen flex flex-col justify-center items-center;
 
   &-authbtn {
     @apply btn btn-primary;
