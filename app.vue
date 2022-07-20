@@ -1,9 +1,11 @@
 <template>
   <div data-theme="cyberpunk" class="min-h-screen">
-    <NuxtLayout>
-      <NavBar />
-      <NuxtPage />
-    </NuxtLayout>
+    <div class="max-w-4xl m-auto">
+      <NuxtLayout>
+        <NavBar />
+        <NuxtPage />
+      </NuxtLayout>
+    </div>
   </div>
 </template>
 
