@@ -6,6 +6,6 @@
 
 <style lang="scss">
 .loading-bar {
-  @apply btn absolute z-50 w-screen;
+  @apply btn absolute z-50 w-screen inset-x-0;
 }
 </style>
