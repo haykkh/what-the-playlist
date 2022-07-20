@@ -1,8 +1,8 @@
 <template>
   <div>
     <LoadingBar v-if="musicStore.playlists.length < 1" />
-    <div class="overflow-x-auto w-full">
-      <table class="table w-full">
+    <div class="playlist-table">
+      <table class="playlist-table-table">
         <!-- head -->
         <thead>
           <tr>
@@ -39,4 +39,15 @@ import { useMusicStore } from "@/stores"
 const musicStore = useMusicStore()
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.playlist-table {
+  @apply overflow-x-auto w-full;
+
+  &-table {
+    @apply table w-full border border-base-200 rounded-lg;
+    border-spacing: 0px;
+    border-collapse: unset;
+  }
+
+}
+</style>
