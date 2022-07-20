@@ -30,12 +30,6 @@
     <td class="table-row-tracks">
       {{ playlist.tracks.total }}
     </td>
-
-    <th class="table-row-details">
-      <NuxtLink :to="`/playlists/${playlist.id}`" class="table-row-details-btn">
-        details
-      </NuxtLink>
-    </th>
   </tr>
 </template>
 

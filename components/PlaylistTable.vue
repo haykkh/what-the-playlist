@@ -14,7 +14,6 @@
             <th>Name</th>
             <th>Owner</th>
             <th>Tracks</th>
-            <th />
           </tr>
         </thead>
         <tbody>
@@ -27,7 +26,6 @@
             <th>Name</th>
             <th>Owner</th>
             <th>Tracks</th>
-            <th />
           </tr>
         </tfoot>
       </table>
