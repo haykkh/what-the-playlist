@@ -5,7 +5,7 @@
       v-else
       class="index-authbtn"
       :href="authStore.getUserAuthorizationLink"
-    >sign into spotify</a>
+    >continue with spotify</a>
   </div>
 </template>
 
