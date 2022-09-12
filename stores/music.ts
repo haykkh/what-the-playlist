@@ -74,6 +74,24 @@ export const useMusicStore = defineStore({
       }
 
       return playlist
+    },
+
+    async fetchAllPlaylistSongs (): Promise<IPlaylist[]> {
+      if (!(this.playlists.length > 0)) {
+        await this.fetchPlaylists()
+      }
+
+      this.playlists = await Promise.all(this.playlists.map(async (playlist: IPlaylist) => ({
+        // map over this.playlists and add tracks to each playlists' tracks attr
+        ...playlist,
+        tracks: await this.$nuxt.$spottyPagedFetch(`/playlists/${playlist.id}/tracks`, {
+          params: {
+            fields: "next,items(track(name,album(name)))"
+          }
+        })
+      })))
+
+      return this.playlists
     }
   },
 
