@@ -77,7 +77,7 @@ export const useAuthStore = defineStore({
     },
 
     async fetchUser (): Promise<IUser> {
-      const { data: user } = await this.$nuxt.$spottyFetch("/me")
+      const { data: user } = await useSpottyFetch("/me")
 
       this.user = user.value
 
