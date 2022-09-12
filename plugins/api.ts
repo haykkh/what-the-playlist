@@ -10,6 +10,8 @@ interface ISpotifyPagesResponse {
   total: number
 }
 
+const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+
 export default defineNuxtPlugin(() => {
   const config = useRuntimeConfig()
 
@@ -21,7 +23,15 @@ export default defineNuxtPlugin(() => {
   const spottyFetch = async <returnDataType>(uri: string, { params } = { params: {} }) =>
     await useFetch<returnDataType>(uri.substring(0, 4) === "http" ? uri : `${config.spotifyApiUrl}${uri}`, {
       headers: { Authorization: `Bearer ${authStore.token.access_token}` },
-      params
+      params,
+      async onResponseError ({ request, response, options, error }) {
+        if (response.status === 429 && response.headers.has("Retry-After")) {
+          await wait(+response.headers.get("Retry-After") * 1000 + 1000)
+          await useFetch<returnDataType>(request, options)
+        } else {
+          throw error
+        }
+      }
     })
 
   /**
