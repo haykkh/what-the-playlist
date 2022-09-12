@@ -19,7 +19,7 @@ export default defineNuxtPlugin(() => {
    *  Fetch from spotify API
    */
   const spottyFetch = async <returnDataType>(uri: string, { params } = { params: {} }) =>
-    await useFetch<returnDataType>(`${config.spotifyApiUrl}${uri}`, {
+    await useFetch<returnDataType>(uri.substring(0, 4) === "http" ? uri : `${config.spotifyApiUrl}${uri}`, {
       headers: { Authorization: `Bearer ${authStore.token.access_token}` },
       params
     })
