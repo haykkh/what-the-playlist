@@ -33,24 +33,20 @@ export default defineNuxtPlugin(() => {
    *  until spotify no longer returns data.value.next
    *
    */
-  const spottyPagedFetch = async <returnDataType extends object>(uri: string): Promise<returnDataType[]> => {
+  const spottyPagedFetch = async <returnDataType extends object>(uri: string, { params } = { params: {} }): Promise<returnDataType[]> => {
     try {
       interface ISpotifyPagesResponseWithReturn extends ISpotifyPagesResponse {
         items: returnDataType[]
       }
 
-      const { data } = await spottyFetch<ISpotifyPagesResponseWithReturn>(uri)
+      const { data } = await spottyFetch<ISpotifyPagesResponseWithReturn>(uri, { params })
 
       const allData = data.value.items
 
       while (data.value.next) {
-        const { data: newData } = await useFetch<ISpotifyPagesResponseWithReturn>(
+        const { data: newData } = await spottyFetch<ISpotifyPagesResponseWithReturn>(
           data.value.next,
-          {
-            headers: {
-              Authorization: `Bearer ${authStore.token.access_token}`
-            }
-          }
+          { params }
         )
 
         newData.value.items.forEach(item => allData.unshift(item))
