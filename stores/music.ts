@@ -60,24 +60,51 @@ export const useMusicStore = defineStore({
 
   actions: {
     async fetchPlaylists (): Promise<IPlaylist[]> {
-      this.playlists = await this.$nuxt.$spottyPagedFetch("/me/playlists")
+      this.playlists = await useSpottyPagedFetch<IPlaylist[]>("/me/playlists")
 
       return this.playlists
     },
 
-    async fetchOnePlaylist (id: string): Promise<IPlaylist> {
-      const playlist = await this.$nuxt.$spottyFetch(`/playlists/${id}`)
-      if (playlist) {
-        this.$patch((state) => {
-          state.playlists.push(playlist)
-        })
+    async fetchAllPlaylistSongs (): Promise<IPlaylist[]> {
+      if (!(this.getNumberOfPlaylists > 0)) { await this.fetchPlaylists() }
+
+      if (this.playlists) {
+        this.playlists = await Promise.all(this.playlists.map(async (playlist: IPlaylist) => ({
+        // map over this.playlists and add tracks to each playlists' tracks attr
+          ...playlist,
+          tracks: await useSpottyPagedFetch<IPlaylist[]>(`/playlists/${playlist.id}/tracks`, {
+            params: {
+              fields: "next,items(track(name,album(name)))"
+            }
+          })
+        })))
       }
 
-      return playlist
+      return this.playlists
     }
   },
 
   getters: {
-    getOnePlaylist: state => (id: string): IPlaylist => state.playlists.find(el => el.id === id)
+    getOnePlaylist: state => (id: string): IPlaylist => state.playlists.find(el => el.id === id),
+
+    getNumberOfPlaylists: (state): number => state.playlists?.length ?? 0,
+
+    getNumberOfTracks: (state): number => {
+      // gets the number of tracks in all the playlists
+      // (this assumes that all playlist songs have been fetched)
+      if (state.playlists) {
+        let len = 0
+
+        state.playlists.forEach((playlist) => {
+          if (Array.isArray(playlist.tracks)) {
+            len = len + playlist.tracks.length
+          }
+        })
+
+        return len
+      } else {
+        return 0
+      }
+    }
   }
 })

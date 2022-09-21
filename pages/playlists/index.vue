@@ -1,5 +1,8 @@
 <template>
-  <PlaylistTable />
+  <div>
+    tracks: {{ musicStore.getNumberOfTracks }}
+    <PlaylistTable />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -11,5 +14,7 @@ definePageMeta({
 
 const musicStore = useMusicStore()
 
-onMounted(() => !(musicStore.playlists.length > 0) ? musicStore.fetchPlaylists() : null)
+useNuxtApp().hook("page:finish", async () => {
+  if (!(musicStore.getNumberOfTracks > 0)) { await musicStore.fetchAllPlaylistSongs() }
+})
 </script>
