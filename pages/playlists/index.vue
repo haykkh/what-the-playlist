@@ -1,5 +1,8 @@
 <template>
-  <PlaylistTable />
+  <div>
+    tracks: {{ musicStore.getNumberOfTracks }}
+    <PlaylistTable />
+  </div>
 </template>
 
 <script setup lang="ts">
