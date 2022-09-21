@@ -5,7 +5,8 @@ import eslintPlugin from "vite-plugin-eslint"
 export default defineNuxtConfig({
   modules: [
     "@nuxtjs/tailwindcss",
-    "@pinia/nuxt"
+    "@pinia/nuxt",
+    "nuxt-icon"
   ],
 
   runtimeConfig: {
