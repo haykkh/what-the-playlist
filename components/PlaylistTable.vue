@@ -1,6 +1,6 @@
 <template>
   <div>
-    <LoadingBar v-if="musicStore.playlists.length < 1" />
+    <LoadingBar v-if="musicStore.getNumberOfPlaylists < 1" />
     <div class="playlist-table">
       <table class="playlist-table-table">
         <!-- head -->
