@@ -68,15 +68,17 @@ export const useMusicStore = defineStore({
     async fetchAllPlaylistSongs (): Promise<IPlaylist[]> {
       if (!(this.getNumberOfPlaylists > 0)) { await this.fetchPlaylists() }
 
-      this.playlists = await Promise.all(this.playlists.map(async (playlist: IPlaylist) => ({
+      if (this.playlists) {
+        this.playlists = await Promise.all(this.playlists.map(async (playlist: IPlaylist) => ({
         // map over this.playlists and add tracks to each playlists' tracks attr
-        ...playlist,
-        tracks: await useSpottyPagedFetch<IPlaylist[]>(`/playlists/${playlist.id}/tracks`, {
-          params: {
-            fields: "next,items(track(name,album(name)))"
-          }
-        })
-      })))
+          ...playlist,
+          tracks: await useSpottyPagedFetch<IPlaylist[]>(`/playlists/${playlist.id}/tracks`, {
+            params: {
+              fields: "next,items(track(name,album(name)))"
+            }
+          })
+        })))
+      }
 
       return this.playlists
     }
