@@ -90,15 +90,19 @@ export const useMusicStore = defineStore({
     getNumberOfTracks: (state): number => {
       // gets the number of tracks in all the playlists
       // (this assumes that all playlist songs have been fetched)
-      let len = 0
+      if (state.playlists) {
+        let len = 0
 
-      state.playlists.forEach((playlist) => {
-        if (Array.isArray(playlist.tracks)) {
-          len = len + playlist.tracks.length
-        }
-      })
+        state.playlists.forEach((playlist) => {
+          if (Array.isArray(playlist.tracks)) {
+            len = len + playlist.tracks.length
+          }
+        })
 
-      return len
+        return len
+      } else {
+        return 0
+      }
     }
   }
 })
