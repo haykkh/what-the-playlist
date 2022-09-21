@@ -65,17 +65,6 @@ export const useMusicStore = defineStore({
       return this.playlists
     },
 
-    async fetchOnePlaylist (id: string): Promise<IPlaylist> {
-      const playlist = await useSpottyFetch(`/playlists/${id}`)
-      if (playlist) {
-        this.$patch((state) => {
-          state.playlists.push(playlist)
-        })
-      }
-
-      return playlist
-    },
-
     async fetchAllPlaylistSongs (): Promise<IPlaylist[]> {
       if (!(this.playlists.length > 0)) {
         await this.fetchPlaylists()
