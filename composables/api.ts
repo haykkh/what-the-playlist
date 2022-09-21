@@ -12,17 +12,26 @@ interface ISpotifyPagesResponse {
 
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
+// https://stackoverflow.com/a/27747377
+const generateRandomString = () => Array.from(window.crypto.getRandomValues(new Uint8Array((10 || 40) / 2)), dec => dec.toString(16).padStart(2, "0")).join("")
+
 /**
  *  Fetch from spotify API
+ *  make this better when nuxt fixes it's key generation
+ *  https://github.com/haykkh/what-the-playlist/issues/38
  */
 const useSpottyFetch = async <returnDataType>(uri: string, { params } = { params: {} }) =>
   await useFetch<returnDataType>(uri.substring(0, 4) === "http" ? uri : `${useRuntimeConfig().spotifyApiUrl}${uri}`, {
     headers: { Authorization: `Bearer ${useAuthStore().token.access_token}` },
     params,
+    key: uri,
     async onResponseError ({ request, response, options, error }) {
       if (response.status === 429 && response.headers.has("Retry-After")) {
         await wait(+response.headers.get("Retry-After") * 1000 + 1000)
-        await useFetch<returnDataType>(request, options)
+        // generate a new key for subsequent retries so that nuxt doesn't just return the cached error
+        // https://github.com/nuxt/framework/issues/5838
+        // https://github.com/nuxt/framework/issues/4855
+        await useFetch<returnDataType>(request, { ...options, key: generateRandomString() })
       } else {
         throw error
       }
