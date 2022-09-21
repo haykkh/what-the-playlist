@@ -66,9 +66,7 @@ export const useMusicStore = defineStore({
     },
 
     async fetchAllPlaylistSongs (): Promise<IPlaylist[]> {
-      if (!(this.playlists.length > 0)) {
-        await this.fetchPlaylists()
-      }
+      if (!(this.getNumberOfPlaylists > 0)) { await this.fetchPlaylists() }
 
       this.playlists = await Promise.all(this.playlists.map(async (playlist: IPlaylist) => ({
         // map over this.playlists and add tracks to each playlists' tracks attr
@@ -86,6 +84,8 @@ export const useMusicStore = defineStore({
 
   getters: {
     getOnePlaylist: state => (id: string): IPlaylist => state.playlists.find(el => el.id === id),
+
+    getNumberOfPlaylists: (state): number => state.playlists?.length ?? 0,
 
     getNumberOfTracks: (state): number => {
       // gets the number of tracks in all the playlists
