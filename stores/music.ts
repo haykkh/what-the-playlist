@@ -1,5 +1,7 @@
 import { defineStore } from "pinia"
 
+import { useNotificationStore, type INotification } from "@/stores"
+
 export interface IPlaylist {
   collaborative: boolean
   description: string | null
@@ -60,13 +62,31 @@ export const useMusicStore = defineStore({
 
   actions: {
     async fetchPlaylists (): Promise<IPlaylist[]> {
+      const notificationStore = useNotificationStore()
+
+      const loadingNotification: INotification = {
+        content: "Loading playlists",
+        showProgress: true,
+        persist: true
+      }
+
+      notificationStore.addNotification(loadingNotification)
       this.playlists = await useSpottyPagedFetch<IPlaylist[]>("/me/playlists")
 
+      await notificationStore.removeNotification(loadingNotification)
       return this.playlists
     },
 
     async fetchAllPlaylistSongs (): Promise<IPlaylist[]> {
       if (!(this.getNumberOfPlaylists > 0)) { await this.fetchPlaylists() }
+      const notificationStore = useNotificationStore()
+
+      const loadingNotification: INotification = {
+        content: "Loading songs (this can take up to a minute or two)",
+        showProgress: true,
+        persist: true
+      }
+      notificationStore.addNotification(loadingNotification)
 
       if (this.playlists) {
         this.playlists = await Promise.all(this.playlists.map(async (playlist: IPlaylist) => ({
@@ -80,6 +100,7 @@ export const useMusicStore = defineStore({
         })))
       }
 
+      await notificationStore.removeNotification(loadingNotification)
       return this.playlists
     }
   },
