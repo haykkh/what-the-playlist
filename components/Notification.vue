@@ -1,6 +1,6 @@
 <template>
   <div class="notification">
-    <div v-show="notificationStore.showNotification" :class="`notification-alert alert alert-${notificationStore.getCurrentNotificationColor}`">
+    <div v-show="notificationStore.showNotification" class="notification-alert alert" :class="alertType[notificationStore.getCurrentNotificationColor]">
       <div class="notification-alert-container">
         <Icon
           :name="iconName"
@@ -19,6 +19,14 @@ import { useNotificationStore, type INotification } from "@/stores/notification"
 const notificationStore = useNotificationStore()
 
 const { getFirstNotification } = storeToRefs(notificationStore)
+
+const alertType = {
+  // https://github.com/tailwindlabs/tailwindcss/discussions/3461#discussioncomment-329183
+  info: "alert-info",
+  success: "alert-success",
+  warning: "alert-warning",
+  error: "alert-error"
+}
 
 const colorToIconName = () => {
   switch (notificationStore.getCurrentNotificationColor) {
