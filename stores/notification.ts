@@ -36,7 +36,7 @@ export const useNotificationStore = defineStore({
     ): Promise<boolean> {
       return await new Promise((resolve) => {
         setTimeout(() => {
-          this.notifications = this.notifications.filter((notif:INotification) => notif !== notification)
+          this.notifications = this.notifications.filter((notif: INotification) => toRaw(notif) !== notification)
           resolve(true)
         }, timeout)
       })
