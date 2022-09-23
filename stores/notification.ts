@@ -1,9 +1,10 @@
 import { defineStore } from "pinia"
 
-interface INotification {
+export interface INotification {
   content: string
   color?: "info" | "success" | "warning" | "error"
   showProgress?: boolean
+  persist?: boolean
 }
 
 interface NotificationState {
