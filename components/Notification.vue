@@ -13,9 +13,12 @@
 </template>
 
 <script setup lang="ts">
-import { useNotificationStore } from "@/stores/notification"
+import { storeToRefs } from "pinia"
+import { useNotificationStore, type INotification } from "@/stores/notification"
 
 const notificationStore = useNotificationStore()
+
+const { getFirstNotification } = storeToRefs(notificationStore)
 
 const colorToIconName = () => {
   switch (notificationStore.getCurrentNotificationColor) {
@@ -36,6 +39,23 @@ const iconName = computed(() => notificationStore.showProgress
   ? "teenyicons:loader-outline"
   : `teenyicons:${colorToIconName()}-circle-outline`
 )
+
+watch(getFirstNotification, async (newNotification: INotification | null) => {
+  if (newNotification && newNotification !== notificationStore.currentNotification) {
+    // if new notificatin exists
+    // & it's not the current notification
+    // set the current notification to it
+    notificationStore.setNotification(newNotification)
+    // if we aren't told to persist the notification
+    // set it to timeout in 2 seconds
+    if (!newNotification.persist) { await notificationStore.removeNotification(newNotification, 2000) }
+  }
+
+  if (!notificationStore.currentNotification) {
+    notificationStore.hide()
+  }
+})
+
 </script>
 
 <style lang="scss">
