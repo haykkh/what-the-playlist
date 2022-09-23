@@ -1,17 +1,13 @@
 <template>
-  <div class="callback">
-    <div class="callback-alert">
-      Loading
-    </div>
-  </div>
+  <div />
 </template>
 
 <script setup lang="ts">
-import { useAuthStore } from "@/stores/auth"
-
+import { useAuthStore, useNotificationStore, type INotification } from "@/stores"
 const route = useRoute()
 
 const authStore = useAuthStore()
+const notificationStore = useNotificationStore()
 
 if (typeof route.query.code === "string") {
   authStore.login(route.query.code)
@@ -20,14 +16,14 @@ if (typeof route.query.code === "string") {
     navigateTo("/")
   }
 }
-</script>
 
-<style lang="scss">
-.callback {
-  @apply flex justify-center items-center min-h-screen;
-
-  &-alert {
-    @apply alert alert-info w-fit;
-  }
+const loadingNotification: INotification = {
+  content: "Loading",
+  showProgress: true,
+  persist: true
 }
-</style>
+
+onMounted(() => notificationStore.addNotification(loadingNotification))
+
+onUnmounted(() => notificationStore.removeNotification(loadingNotification))
+</script>
