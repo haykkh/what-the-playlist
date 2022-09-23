@@ -1,7 +1,7 @@
 <template>
   <div class="notification">
-    <div v-show="notificationStore.showNotification" :class="`alert alert-${notificationStore.getCurrentNotificationColor}`">
-      <div>
+    <div v-show="notificationStore.showNotification" :class="`notification-alert alert alert-${notificationStore.getCurrentNotificationColor}`">
+      <div class="notification-alert-container">
         <Icon
           :name="iconName"
           :class="{'animate-spin': notificationStore.showProgress}"
@@ -62,8 +62,12 @@ watch(getFirstNotification, async (newNotification: INotification | null) => {
   .notification {
     @apply p-3 lg:p-8 absolute z-50 top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2;
 
-    .alert {
+    &-alert {
       @apply shadow-lg;
+
+      &-container {
+        @apply w-max max-w-[90vw];
+      }
     }
 
     // need to have these empty classes so that tailwind jit loads them when the page is loaded
