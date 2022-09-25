@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 import { storeToRefs } from "pinia"
-import { useNotificationStore, type INotification } from "@/stores/notification"
+import { useNotificationStore, type INotification } from "@/stores"
 
 const notificationStore = useNotificationStore()
 
@@ -77,11 +77,5 @@ watch(getFirstNotification, async (newNotification: INotification | null) => {
         @apply w-max max-w-[90vw];
       }
     }
-
-    // need to have these empty classes so that tailwind jit loads them when the page is loaded
-    // and we can dynamically switch the class above
-    .alert-success {}
-    .alert-warning {}
-    .alert-error {}
   }
 </style>
