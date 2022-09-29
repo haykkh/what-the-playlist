@@ -35,7 +35,9 @@
   "dependencies": {
     "@pinia/nuxt": "^0.4.2",
     "daisyui": "^2.18.0",
+    "fuse.js": "^6.6.2",
     "pinia": "^2.0.22",
-    "pinia-plugin-persistedstate": "^1.6.1"
+    "pinia-plugin-persistedstate": "^1.6.1",
+    "vue-fuse": "^4.1.1"
   }
 }
