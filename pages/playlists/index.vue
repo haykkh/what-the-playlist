@@ -1,8 +1,5 @@
 <template>
-  <div>
-    tracks: {{ musicStore.getNumberOfTracks }}
-    <PlaylistTable />
-  </div>
+  <TrackSearch v-if="musicStore.getNumberOfTracks" />
 </template>
 
 <script setup lang="ts">

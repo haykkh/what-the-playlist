@@ -94,7 +94,7 @@ export const useMusicStore = defineStore({
           ...playlist,
           tracks: await useSpottyPagedFetch<IPlaylist[]>(`/playlists/${playlist.id}/tracks`, {
             params: {
-              fields: "next,items(track(name,album(name)))"
+              fields: "next,items(track(name,album(name),artists(name)))"
             }
           })
         })))
