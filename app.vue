@@ -1,6 +1,6 @@
 <template>
   <div data-theme="cyberpunk" class="min-h-screen">
-    <div class="max-w-4xl m-auto">
+    <div class="max-w-4xl m-auto flex flex-col min-h-screen">
       <NuxtLayout>
         <Notification />
         <NavBar />
