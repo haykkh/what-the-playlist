@@ -56,8 +56,7 @@ export const useAuthStore = defineStore({
         client_id: spotifyClientId,
         redirect_uri: spotifyCallbackUrl,
         response_type: "code",
-        scope:
-          "user-read-currently-playing,user-read-playback-state,user-read-recently-played"
+        scope: "playlist-read-private,playlist-read-collaborative"
       })
 
       return `https://accounts.spotify.com/authorize?${params.toString()}`
