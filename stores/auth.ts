@@ -1,5 +1,7 @@
 import { defineStore } from "pinia"
 
+import { useMusicStore } from "@/stores"
+
 interface IToken {
     access_token: string
     token_type: string
@@ -89,6 +91,11 @@ export const useAuthStore = defineStore({
         await this.fetchAccessToken(code)
       }
       return this.user
+    },
+
+    async logout (): Promise<void> {
+      await this.$reset()
+      await useMusicStore().$reset()
     }
   },
 
