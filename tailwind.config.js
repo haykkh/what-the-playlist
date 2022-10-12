@@ -10,7 +10,21 @@ module.exports = {
     "app.{js,ts,vue}"
   ],
   theme: {
-    extend: {}
+    extend: {
+      fontFamily: {
+        fixedsys: [
+          "fixedsys",
+          "ui-monospace",
+          "SFMono-Regular",
+          "Menlo",
+          "Monaco",
+          "Consolas",
+          "Liberation Mono",
+          "Courier New",
+          "monospace"
+        ]
+      }
+    }
   },
   plugins: [require("daisyui")],
   tailwindcss: {},

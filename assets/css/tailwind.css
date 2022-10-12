@@ -1,0 +1,15 @@
+/* ./assets/css/tailwind.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "fixedsys";
+  src: local("Fixedsys Excelsior"), local("Fixedsys Excelsior 3.01"),
+    local("FixedsysExcelsiorIIIb"),
+    url("assets/fonts/FixedsysExcelsiorIIIb.woff2") format("woff2"),
+    url("assets/fonts/FixedsysExcelsiorIIIb.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
