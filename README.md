@@ -1,20 +1,15 @@
-# Nuxt 3 Minimal Starter
+# what the playlist
 
-Look at the [nuxt 3 documentation](https://v3.nuxtjs.org) to learn more.
+Ever hear a song for the first time in years and remember that one playlist you made 4 years ago but think to yourself _what the #$!% was the name of that playlist?_.
+
+what the playlist looks through your created and followed playlists to find the one with that song/album/artist you just can't get out of your head.<br><br>
 
 ## Setup
 
 Make sure to install the dependencies:
 
 ```bash
-# yarn
 yarn install
-
-# npm
-npm install
-
-# pnpm
-pnpm install --shamefully-hoist
 ```
 
 ## Development Server
@@ -22,7 +17,7 @@ pnpm install --shamefully-hoist
 Start the development server on http://localhost:3000
 
 ```bash
-npm run dev
+yarn dev
 ```
 
 ## Production
@@ -30,13 +25,11 @@ npm run dev
 Build the application for production:
 
 ```bash
-npm run build
+yarn build
 ```
 
 Locally preview production build:
 
 ```bash
-npm run preview
+yarn preview
 ```
-
-Checkout the [deployment documentation](https://v3.nuxtjs.org/guide/deploy/presets) for more information.
