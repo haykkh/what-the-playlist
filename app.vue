@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 useHead({
-  title: "what that playlist",
+  title: "what the playlist",
   viewport: "width=device-width, initial-scale=1, maximum-scale=1",
   charset: "utf-8",
   meta: [
