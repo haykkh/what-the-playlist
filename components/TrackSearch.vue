@@ -49,8 +49,9 @@
     <p v-if="noResults">
       No results for <span class="track-search-results-searchterm">{{ search }}</span>.
     </p>
-    <p v-if="search === ''">
-      Type in the field above to search your playlists.
+    <p v-if="search === ''" class="track-search-results-brief">
+      what the playlist looks through your created and followed playlists to find the one with that song/album/artist you just can't get out of your head.<br><br>
+      Type in the field above to get started.
     </p>
     <div class="track-search-results">
       <a v-for="({ item }, i) in resultsRaw" :key="i" class="track-search-results-result" :href="item.external_urls.spotify">
@@ -193,7 +194,11 @@ watch(() => extendedFuse.value.options.keys, () => {
     @apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4;
 
     &-searchterm {
-      @apply italic;
+      @apply italic text-primary;
+    }
+
+    &-brief {
+      @apply w-96;
     }
 
     &-result {
