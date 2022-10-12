@@ -25,6 +25,7 @@
     "lint-staged": "^13.0.3",
     "nuxt": "^3.0.0-rc.11",
     "nuxt-icon": "^0.1.6",
+    "nuxt-svgo": "^1.0.1",
     "postcss": "^8.4.14",
     "prettier": "^2.7.1",
     "sass": "^1.53.0",

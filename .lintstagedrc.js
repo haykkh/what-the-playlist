@@ -1,5 +1,5 @@
 module.exports = {
-  "**/*.{js,ts,vue,html,css,scss}": [
+  "**/*.{js,ts,vue,html,scss}": [
     "yarn lintfix"
   ]
 }
