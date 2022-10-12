@@ -6,6 +6,7 @@
         <NavBar />
         <NuxtPage />
       </NuxtLayout>
+      <Footer />
     </div>
   </div>
 </template>
