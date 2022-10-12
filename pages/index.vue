@@ -1,9 +1,15 @@
 <template>
   <TrackSearch v-if="authStore.isLoggedIn && (musicStore.getNumberOfTracks > 0)" />
-  <div v-else-if="!authStore.isLoggedIn" class="index-auth">
-    <a class="index-auth-btn" :href="authStore.getUserAuthorizationLink">
+  <div v-else-if="!authStore.isLoggedIn" class="index-hero">
+    <h1 class="index-hero-title">
+      what the #$!% was that playlist?
+    </h1>
+    <p class="index-hero-subtitle">
+      Ever hear a song for the first time in years and remember that one playlist you made 4 years ago but think to yourself <span class="index-hero-subtitle-highlight">what the #$!% was the name of that playlist?</span>
+    </p>
+    <a class="index-hero-btn" :href="authStore.getUserAuthorizationLink">
       continue with
-      <IconSpotify class="index-auth-btn-spotifylogo" />
+      <IconSpotify class="index-hero-btn-spotifylogo" />
     </a>
   </div>
 </template>
@@ -22,8 +28,20 @@ if (!(musicStore.getNumberOfTracks > 0) && authStore.isLoggedIn) { await musicSt
 </script>
 
 <style lang="scss">
-.index-auth {
-  @apply flex flex-col grow justify-center items-center;
+.index-hero {
+  @apply flex flex-col grow justify-center items-center text-center max-w-md m-auto gap-6;
+
+  &-title {
+    @apply text-xl font-bold;
+  }
+
+  &-subtitle {
+    @apply text-sm;
+
+    &-highlight {
+      @apply italic text-primary-content;
+    }
+  }
 
   &-btn {
     @apply btn btn-primary flex-nowrap gap-x-2;
