@@ -54,7 +54,7 @@
     </p>
     <div class="track-search-results">
       <a v-for="({ item }, i) in resultsRaw" :key="i" class="track-search-results-result" :href="item.external_urls.spotify">
-        <img :src="item.images[0].url" :alt="item.name" class="track-search-results-result-image">
+        <img :src="item?.images?.[0]?.url" :alt="item.name" class="track-search-results-result-image">
         <div class="track-search-results-result-body">
           <h2 class="track-search-results-result-body-name">
             {{ item.name }}
