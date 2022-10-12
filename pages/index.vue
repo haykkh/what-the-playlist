@@ -29,7 +29,7 @@ if (!(musicStore.getNumberOfTracks > 0) && authStore.isLoggedIn) { await musicSt
 
 <style lang="scss">
 .index-hero {
-  @apply flex flex-col grow justify-center items-center text-center max-w-md m-auto gap-6;
+  @apply flex flex-col grow justify-center items-center text-center max-w-md m-auto gap-6 p-6;
 
   &-title {
     @apply text-xl font-bold;
