@@ -31,22 +31,23 @@ export default defineEventHandler(async (event) => {
     // but testing showed that db.fetch failed with 37+ queries
     const chunks = chunker(queries, 37)
 
-    const data: unknown[] = []
-
     // check responses for last key in case there are more to fetch
     // see note in https://docs.deta.sh/docs/base/sdk/#fetch
-    await Promise.all(chunks.map(async (chunk) => {
+    const data = await Promise.all(chunks.map(async (chunk) => {
       let res = await db.fetch(chunk)
-      data.push(...res.items)
+      const items = res.items
 
       while (res.last) {
         res = await db.fetch(chunk, { last: res.last })
-        data.push(...res.items)
+        items.push(...res.items)
       }
+
+      return items
     }))
 
-    return data
+    return data.flat()
   } else {
-    return await db.fetch(queries)
+    const { items } = await db.fetch(queries)
+    return items
   }
 })

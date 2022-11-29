@@ -15,5 +15,7 @@ export default defineEventHandler(async (event) => {
   // max 25 items per post on deta's end
   const chunks = chunker(items, 25)
 
-  return await Promise.all(chunks.map(async chunk => await db.putMany(chunk)))
+  const data = await Promise.all(chunks.map(async chunk => await db.putMany(chunk)))
+
+  return data.flatMap(el => el.processed.items)
 })
