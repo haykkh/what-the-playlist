@@ -128,21 +128,53 @@ export const useMusicStore = defineStore({
       notificationStore.addNotification(loadingNotification)
 
       if (this.playlists) {
-        this.playlists = await Promise.all(this.playlists.map(async (playlist: IPlaylist) => ({
-        // map over this.playlists and add tracks to each playlists' tracks attr
-          ...playlist,
-          tracks: {
-            ...playlist.tracks,
-            items: await useSpottyPagedFetch<ITrackItem>(`/playlists/${playlist.id}/tracks`, {
-              params: {
-                fields: "next,items(track(name,album(name),artists(name)))"
-              }
-            })
+        const dbPlaylists = await this.fetchDbPlaylists()
+
+        // map array of db playlists to object where keys are the ids of playlists
+        // eg
+        //  dbPlaylists = [{ id: "XYZ", ...}, { id: "ABC", ...}, ...]
+        //  => dbPlaylistObject = { XYZ: { id: "XYZ", ...}, ABC: { id: "ABC", ...}, ...}
+        const dbPlaylistObject = dbPlaylists?.reduce((a, v) => ({ ...a, [v.id]: v }), <Record<string, IPlaylist>>{})
+
+        // gather playlists that are different between spotify and database
+        // aka the db variant needs to be updated
+        const updatedPlaylists: IPlaylist[] = []
+
+        // map over this.playlists and:
+        // if dbPlaylist has the same snapshot_id as this.playlist
+        //  => return dbPlaylist
+        // else
+        //  => fetch all the new tracks and add them to this.playlist, return that
+        // also add updated playlists to updatedPlaylists
+        this.playlists = await Promise.all(this.playlists.map(async (playlist: IPlaylist) => {
+          const dbPlaylist = dbPlaylistObject?.[playlist.id]
+
+          if (dbPlaylist && playlist.snapshot_id === dbPlaylist.snapshot_id) {
+            return dbPlaylist
           }
-        })))
+
+          const updatedPlaylist = {
+            ...playlist,
+            tracks: {
+              ...playlist.tracks,
+              items: await useSpottyPagedFetch<ITrackItem>(`/playlists/${playlist.id}/tracks`, {
+                params: {
+                  fields: "next,items(track(name,album(name),artists(name)))"
+                }
+              })
+            }
+          }
+
+          updatedPlaylists.push(updatedPlaylist)
+
+          return updatedPlaylist
+        }))
+
+        this.updateDbPlaylists(updatedPlaylists)
       }
 
       await notificationStore.removeNotification(loadingNotification)
+
       return this.playlists
     }
   },
