@@ -26,8 +26,9 @@ const useSpottyFetch = async <returnDataType>(uri: string, { params } = { params
     params,
     key: uri,
     async onResponseError ({ request, response, options, error }) {
-      if (response.status === 429 && response.headers.has("Retry-After")) {
-        await wait(+response.headers.get("Retry-After") * 1000 + 1000)
+      const retryAfter = response.headers.get("Retry-After")
+      if (response.status === 429 && retryAfter) {
+        await wait(+retryAfter * 1000 + 1000)
         // generate a new key for subsequent retries so that nuxt doesn't just return the cached error
         // https://github.com/nuxt/framework/issues/5838
         // https://github.com/nuxt/framework/issues/4855
@@ -47,7 +48,7 @@ const useSpottyFetch = async <returnDataType>(uri: string, { params } = { params
    *  until spotify no longer returns data.value.next
    *
    */
-const useSpottyPagedFetch = async <returnDataType extends object>(uri: string, { params } = { params: {} }): Promise<returnDataType[]> => {
+const useSpottyPagedFetch = async <returnDataType extends object>(uri: string, { params } = { params: {} }): Promise<returnDataType[] | void> => {
   try {
       interface ISpotifyPagesResponseWithReturn extends ISpotifyPagesResponse {
         items: returnDataType[]
@@ -55,15 +56,17 @@ const useSpottyPagedFetch = async <returnDataType extends object>(uri: string, {
 
       const { data } = await useSpottyFetch<ISpotifyPagesResponseWithReturn>(uri, { params })
 
-      const allData = data.value.items
+      const allData = data.value?.items
 
-      while (data.value.next) {
+      while (data.value?.next) {
         const { data: newData } = await useSpottyFetch<ISpotifyPagesResponseWithReturn>(
           data.value.next,
           { params }
         )
 
-        newData.value.items.forEach(item => allData.unshift(item))
+        if (newData.value) {
+          allData?.push(...newData.value.items)
+        }
 
         data.value = newData.value
       }
