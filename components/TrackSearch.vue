@@ -82,7 +82,7 @@ const musicStore = useMusicStore()
 const { playlists } = storeToRefs(musicStore)
 
 const { fuse, search, resultsRaw, noResults, runSearch } = useVueFuse(playlists, {
-  keys: ["tracks.track.name", "tracks.track.artists.name", "tracks.track.album.name"],
+  keys: ["tracks.items.track.name", "tracks.items.track.artists.name", "tracks.items.track.album.name"],
   includeMatches: true,
   findAllMatches: true,
   ignoreFieldNorm: true,

@@ -2,6 +2,16 @@ import { defineStore } from "pinia"
 
 import { useNotificationStore, type INotification } from "@/stores"
 
+export interface ITrackItem {
+  album: {
+    name: string
+  }
+  artists: {
+    name: string
+  }[]
+  name: string
+}
+
 export interface IPlaylist {
   collaborative: boolean
   description: string | null
@@ -38,7 +48,7 @@ export interface IPlaylist {
   snapshot_id: string
   tracks: {
     href: string
-    items: object[]
+    items: ITrackItem[] | void
     limit: number
     next: string
     offset: number
@@ -92,11 +102,14 @@ export const useMusicStore = defineStore({
         this.playlists = await Promise.all(this.playlists.map(async (playlist: IPlaylist) => ({
         // map over this.playlists and add tracks to each playlists' tracks attr
           ...playlist,
-          tracks: await useSpottyPagedFetch<IPlaylist[]>(`/playlists/${playlist.id}/tracks`, {
-            params: {
-              fields: "next,items(track(name,album(name),artists(name)))"
-            }
-          })
+          tracks: {
+            ...playlist.tracks,
+            items: await useSpottyPagedFetch<ITrackItem>(`/playlists/${playlist.id}/tracks`, {
+              params: {
+                fields: "next,items(track(name,album(name),artists(name)))"
+              }
+            })
+          }
         })))
       }
 
@@ -110,22 +123,6 @@ export const useMusicStore = defineStore({
 
     getNumberOfPlaylists: (state): number => state.playlists?.length ?? 0,
 
-    getNumberOfTracks: (state): number => {
-      // gets the number of tracks in all the playlists
-      // (this assumes that all playlist songs have been fetched)
-      if (state.playlists) {
-        let len = 0
-
-        state.playlists.forEach((playlist) => {
-          if (Array.isArray(playlist.tracks)) {
-            len = len + playlist.tracks.length
-          }
-        })
-
-        return len
-      } else {
-        return 0
-      }
-    }
+    getNumberOfTracks: (state): number => state.playlists.reduce((sum, playlist) => sum + playlist.tracks.total, 0)
   }
 })
