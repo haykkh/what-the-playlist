@@ -1,6 +1,6 @@
 import { defineStore } from "pinia"
 
-import { useNotificationStore, type INotification } from "@/stores"
+import { useAuthStore, useNotificationStore, type INotification } from "@/stores"
 
 export interface ITrackItem {
   album: {
@@ -87,6 +87,35 @@ export const useMusicStore = defineStore({
       return this.playlists
     },
 
+    async updateDbUserPlaylists () {
+      const authStore = useAuthStore()
+
+      const user = {
+        key: authStore.user.id,
+        playlists: this.getPlaylistIds
+      }
+
+      return await $fetch("/api/db/users/put-many", { method: "post", body: { items: [user] } })
+    },
+
+    async fetchDbPlaylists (): Promise<IPlaylist[] | null> {
+      const queries = this.playlists.map(playlist => ({ id: playlist.id }))
+
+      return await $fetch<IPlaylist[]>("/api/db/playlists/fetch", { method: "post", body: { queries } })
+    },
+
+    async updateDbPlaylists (playlists: IPlaylist[]): Promise<IPlaylist[] | null> {
+      const items = playlists.map(playlist => ({ ...playlist, key: playlist.id }))
+
+      return await $fetch<IPlaylist[]>("/api/db/playlists/put-many", { method: "post", body: { items } })
+    },
+
+    async updateAllDbPlaylists (): Promise<IPlaylist[] | null> {
+      const items = this.playlists.map(playlist => ({ ...playlist, key: playlist.id }))
+
+      return await $fetch<IPlaylist[]>("/api/db/playlists/put-many", { method: "post", body: { items } })
+    },
+
     async fetchAllPlaylistSongs (): Promise<IPlaylist[]> {
       if (!(this.getNumberOfPlaylists > 0)) { await this.fetchSpotifyPlaylists() }
       const notificationStore = useNotificationStore()
@@ -123,6 +152,8 @@ export const useMusicStore = defineStore({
 
     getNumberOfPlaylists: (state): number => state.playlists?.length ?? 0,
 
-    getNumberOfTracks: (state): number => state.playlists.reduce((sum, playlist) => sum + playlist.tracks.total, 0)
+    getNumberOfTracks: (state): number => state.playlists.reduce((sum, playlist) => sum + playlist.tracks.total, 0),
+
+    getPlaylistIds: state => state.playlists.map(playlist => playlist.id)
   }
 })
