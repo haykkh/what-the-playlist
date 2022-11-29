@@ -71,7 +71,7 @@ export const useMusicStore = defineStore({
   }),
 
   actions: {
-    async fetchPlaylists (): Promise<IPlaylist[]> {
+    async fetchSpotifyPlaylists (): Promise<IPlaylist[]> {
       const notificationStore = useNotificationStore()
 
       const loadingNotification: INotification = {
@@ -88,7 +88,7 @@ export const useMusicStore = defineStore({
     },
 
     async fetchAllPlaylistSongs (): Promise<IPlaylist[]> {
-      if (!(this.getNumberOfPlaylists > 0)) { await this.fetchPlaylists() }
+      if (!(this.getNumberOfPlaylists > 0)) { await this.fetchSpotifyPlaylists() }
       const notificationStore = useNotificationStore()
 
       const loadingNotification: INotification = {
