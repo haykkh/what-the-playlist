@@ -81,7 +81,7 @@ export const useMusicStore = defineStore({
       }
 
       notificationStore.addNotification(loadingNotification)
-      this.playlists = await useSpottyPagedFetch<IPlaylist[]>("/me/playlists")
+      this.playlists = await useSpottyPagedFetch<IPlaylist>("/me/playlists") ?? []
 
       await notificationStore.removeNotification(loadingNotification)
       return this.playlists
@@ -119,7 +119,7 @@ export const useMusicStore = defineStore({
   },
 
   getters: {
-    getOnePlaylist: state => (id: string): IPlaylist => state.playlists.find(el => el.id === id),
+    getOnePlaylist: state => (id: string): IPlaylist | undefined => state.playlists.find(el => el.id === id),
 
     getNumberOfPlaylists: (state): number => state.playlists?.length ?? 0,
 
