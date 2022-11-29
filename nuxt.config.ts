@@ -11,6 +11,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     spotifyClientSecret: "",
+    detaKey: "",
 
     public: {
       spotifyClientId: "",
